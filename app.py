@@ -12,7 +12,6 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
 db = create_engine(os.environ.get('SQLALCHEMY_DATABASE_URI'))
 
-
 class Admin(SQLModel, table=True):
     admin_id: int = Field(default=None, primary_key=True)
     username: str = Field()
@@ -32,7 +31,6 @@ class Glossary(SQLModel, table=True):
     def get_all_terms():
          with Session(db) as session:
              return session.exec(select(Glossary)).all()
-
 
 class Subscriber(SQLModel, table=True):
     subscriber_id: int = Field(default=None, primary_key=True)
