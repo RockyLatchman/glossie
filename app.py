@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from passlib.hash import sha256_crypt
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
+from sqlmodel import Field, SQLModel, create_engine, Relationship, Session, select
+from typing import List, Optional
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 import os
@@ -9,37 +9,45 @@ import os
 load_dotenv('.env')
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
-db = SQLAlchemy(app)
+db = create_engine(os.environ.get('SQLALCHEMY_DATABASE_URI'))
 
 
-class Admin(db.Model):
-    admin_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    last_active = db.Column(db.DateTime(datetime.now(timezone.utc)))
-    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    glossary_terms = db.relationship('Glossary', backref="admin", lazy=True)
+class Admin(SQLModel, table=True):
+    admin_id: int = Field(default=None, primary_key=True)
+    username: str = Field()
+    password: str = Field(max_length=150)
+    last_active: datetime = Field(default=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    glossary_terms: List['Glossary'] = Relationship(back_populates="admin")
 
-class Glossary(db.Model):
-    glossary_id = db.Column(db.Integer, primary_key=True)
-    term = db.Column(db.String, nullable=False)
-    definition = db.Column(db.Text, nullable=False)
-    acronym = db.Column(db.String)
-    date_added = db.Column(db.DateTime(datetime.now(timezone.utc)))
-    admin_id = db.Column(db.Integer, ForeignKey('admin.admin_id'), nullable=False)
+class Glossary(SQLModel, table=True):
+    glossary_id: int = Field(default=None, primary_key=True)
+    term: str = Field()
+    definition: str  = Field()
+    date_added: datetime = Field(default_factory=datetime.now(timezone.utc))
+    admin_id: Optional[int] = Field(default=None, foreign_key='admin.admin_id')
+    admin: Optional[Admin] = Relationship(back_populates="glossary_terms")
 
-class Subscribers(db.Model):
-    subscriber_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, nullable=False)
-    status = db.Column(db.String, default='active')
-    created_at = db.Column(db.DateTime(datetime.now(timezone.utc)))
+    def get_all_terms():
+         with Session(db) as session:
+             return session.exec(select(Glossary)).all()
+
+
+class Subscriber(SQLModel, table=True):
+    subscriber_id: int = Field(default=None, primary_key=True)
+    email: str = Field()
+    status: str = Field(default='active')
+    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
 
 
 @app.route('/')
 def glossary_directory():
-    return jsonify({'greeting' : 'hello'})
+   glossary_results = Glossary.get_all_terms()
+   glossary = [glossary.model_dump() for glossary in glossary_results]
+   return render_template('index.html', glossary_terms=glossary)
+
+
 
 @app.route('/<alphabet>')
 def glossary_search(alphabet):
@@ -109,9 +117,6 @@ def view_subscribers():
 def subscriber():
     #delete or view subscriber
     pass
-
-
-
 
 
 if __name__ == '__main__':

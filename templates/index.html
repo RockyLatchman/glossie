@@ -1,0 +1,8 @@
+<div id="container">
+    {% for glossary in glossary_terms %}
+    <div class="glossary-terms">
+        <p>{{ glossary['term'] }}</p>
+        <p>{{ glossary['definition'] }}</p>
+    </div>
+    {% endfor %}
+</div>
