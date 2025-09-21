@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template
+from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 import os
 
 load_dotenv('.env')
@@ -9,6 +11,22 @@ app['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
 db = SQLAlchemy(app)
+
+
+class Admin(db.Model):
+    admin_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    last_active = db.Column(db.DateTime(datetime.now(timezone.utc)))
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+
+class Glossary(db.Model):
+    pass
+
+class Subscribers(db.Model):
+    pass
+
+
 
 
 @app.route('/')
