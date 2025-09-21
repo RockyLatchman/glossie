@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Glossie</title>
+        <title>Glossie - A programmers glossary</title>
         <link
             rel="stylesheet"
             href="{{ url_for('static', filename='css/main.css') }}"
         />
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"></script>
     </head>
     <body>
         {% block content %}{% endblock %}

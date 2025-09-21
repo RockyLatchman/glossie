@@ -24,6 +24,7 @@ class Glossary(SQLModel, table=True):
     glossary_id: int = Field(default=None, primary_key=True)
     term: str = Field()
     definition: str  = Field()
+    initial: str = Field(index=True)
     date_added: datetime = Field(default_factory=datetime.now(timezone.utc))
     admin_id: Optional[int] = Field(default=None, foreign_key='admin.admin_id')
     admin: Optional[Admin] = Relationship(back_populates="glossary_terms")
@@ -31,6 +32,20 @@ class Glossary(SQLModel, table=True):
     def get_all_terms():
          with Session(db) as session:
              return session.exec(select(Glossary)).all()
+
+    def search_by_letter(letter):
+        with Session(db) as session:
+            statement = select(Glossary).where(Glossary.initial == letter)
+            return session.exec(statement).all()
+
+    def glossary_menu():
+        with Session(db) as session:
+            return session.exec(
+                select(Glossary)
+                .distinct(Glossary.initial)
+                .group_by(Glossary.initial)
+            ).all()
+
 
 class Subscriber(SQLModel, table=True):
     subscriber_id: int = Field(default=None, primary_key=True)
@@ -42,14 +57,14 @@ class Subscriber(SQLModel, table=True):
 @app.route('/')
 def glossary_directory():
    glossary_results = Glossary.get_all_terms()
+   menu = Glossary.glossary_menu()
    glossary = [glossary.model_dump() for glossary in glossary_results]
-   return render_template('index.html', glossary_terms=glossary)
-
-
+   return render_template('index.html', glossary_terms=glossary, glossary_menu=menu)
 
 @app.route('/<alphabet>')
 def glossary_search(alphabet):
-    return f'{alphabet}'
+    terms = Glossary.search_by_letter(alphabet)
+    return render_template('', glossary_terms=terms)
 
 @app.route('/about')
 def about():
