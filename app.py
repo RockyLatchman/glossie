@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 import os
@@ -19,9 +20,15 @@ class Admin(db.Model):
     password = db.Column(db.String, nullable=False)
     last_active = db.Column(db.DateTime(datetime.now(timezone.utc)))
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    glossary_terms = db.relationship('Glossary', backref="admin", lazy=True)
 
 class Glossary(db.Model):
-    pass
+    glossary_id = db.Column(db.Integer, primary_key=True)
+    term = db.Column(db.String, nullable=False)
+    definition = db.Column(db.Text, nullable=False)
+    acronym = db.Column(db.String)
+    date_added = db.Column(db.DateTime(datetime.now(timezone.utc)))
+    admin_id = db.Column(db.Integer, ForeignKey('admin.admin_id'), nullable=False)
 
 class Subscribers(db.Model):
     pass
