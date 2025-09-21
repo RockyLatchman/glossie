@@ -8,9 +8,9 @@ import os
 
 load_dotenv('.env')
 app = Flask(__name__)
-app['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-app['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
-app['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
 db = SQLAlchemy(app)
 
 
@@ -31,18 +31,19 @@ class Glossary(db.Model):
     admin_id = db.Column(db.Integer, ForeignKey('admin.admin_id'), nullable=False)
 
 class Subscribers(db.Model):
-    pass
-
-
+    subscriber_id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String, nullable=False)
+    status = db.Column(db.String, default='active')
+    created_at = db.Column(db.DateTime(datetime.now(timezone.utc)))
 
 
 @app.route('/')
-def index():
-    pass
+def glossary_directory():
+    return jsonify({'greeting' : 'hello'})
 
 @app.route('/<alphabet>')
-def glossary_search():
-    pass
+def glossary_search(alphabet):
+    return f'{alphabet}'
 
 @app.route('/about')
 def about():
