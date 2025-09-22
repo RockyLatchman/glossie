@@ -1,3 +1,6 @@
+
+/* Global  ****************************/
+
 * {
   padding: 0;
   margin: 0;
@@ -157,8 +160,35 @@ footer input:hover {
   background: rgba(244, 244, 244, 0.1);
 }
 
-/* styles for menus etc. (JavaScript) */
 
+/* Directory  **************************/
+
+
+/* Tautogram  **************************/
+
+
+
+
+
+/* Search  ****************************/
+
+
+/* About  ******************************/
+
+
+/* Contact  ****************************/
+
+
+/* Documentation  **********************/
+
+
+/* Newsletter  **************************/
+
+
+
+
+
+/* Styles for menus etc. (JavaScript) */
 
 .menu-window {
   width: 100%;

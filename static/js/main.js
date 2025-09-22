@@ -7,13 +7,7 @@ const observer = new IntersectionObserver(entries => {
     entries.forEach((entry, index) => {
         if (entry.isIntersecting){
           letter.textContent = entry.target.attributes['data-initial'].value;
-          glossaryIndex.forEach((glossary_item, index) => {
-              if (glossaryIndex[index].textContent == letter.textContent){
-                  glossaryIndex[index].style.color = 'red';
-              } else {
-                  glossaryIndex[index].style.color = '#FAFAFA';
-              }
-          })
+          setInitial(letter.textContent);
         }
      })
   });
@@ -21,6 +15,16 @@ const observer = new IntersectionObserver(entries => {
 letters.forEach(letter => {
   observer.observe(letter);
 })
+
+function setInitial(initial) {
+  glossaryIndex.forEach((_, index) => {
+      if (glossaryIndex[index].textContent == initial.toUpperCase()){
+        glossaryIndex[index].style.color = 'red';
+      } else {
+         glossaryIndex[index].style.color = '#FAFAFA';
+      }
+  })
+}
 
 function loadMenu() {
   const navMenu = `
@@ -47,3 +51,8 @@ function loadMenu() {
 hamburgerMenu.addEventListener('click', (e) => {
   loadMenu();
 })
+
+document.addEventListener('DOMContentLoaded', (e) => {
+  const initial = document.documentURI.charAt(document.documentURI.length - 1);
+  setInitial(initial);
+});

@@ -62,12 +62,21 @@ def glossary_menu():
 def glossary_directory():
    glossary_results = Glossary.get_all_terms()
    glossary = [glossary.model_dump() for glossary in glossary_results]
-   return render_template('index.html', glossary_terms=glossary, glossary_menu=g.menu)
+   return render_template(
+       'index.html',
+       glossary_terms=glossary,
+       glossary_menu=g.menu
+   )
 
 @app.route('/<letter>')
 def glossary_search(letter):
     terms = Glossary.search_by_letter(letter.upper())
-    return render_template('tautogram.html', glossary_terms=terms,  glossary_menu=g.menu)
+    return render_template(
+        'tautogram.html',
+        glossary_terms=terms,
+        letter=letter.upper(),
+        glossary_menu=g.menu
+    )
 
 @app.route('/about')
 def about():

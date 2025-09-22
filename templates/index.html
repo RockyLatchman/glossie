@@ -1,23 +1,24 @@
-{% extends 'base.html' %} {% block content %}
-<div class="container" id="glossary-container">
-    {% include 'partials/glossary_menu.html' %}
-    <main>
-           <div id="glossary-content-flex">
-              <div id="left-column">
-                  <div id="letter">
-                      <h1>A</h1>
-                  </div>
-              </div>
-            <div id="right-column">
-            {% for glossary in glossary_terms|sort(attribute='term') %}
-                <div class="glossary-terms">
-                    <p class="letters" data-initial="{{ glossary['initial'] }}"></p>
-                    <p>{{ glossary['term'] }}</p>
-                    <p>{{ glossary['definition'] }}</p>
+{% extends 'base.html' %}
+   {% block content %}
+    <div class="container" id="glossary-container">
+        {% include 'partials/glossary_menu.html' %}
+        <main>
+            <div id="glossary-content-flex">
+                <div id="left-column">
+                    <div id="letter">
+                        <h1>A</h1>
+                    </div>
                 </div>
-                {% endfor %}
+                <div id="right-column">
+                {% for glossary in glossary_terms|sort(attribute='term') %}
+                    <div class="glossary-terms">
+                        <p class="letters" data-initial="{{ glossary['initial'] }}"></p>
+                        <p>{{ glossary['term'] }}</p>
+                        <p>{{ glossary['definition'] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 {% endblock %}
