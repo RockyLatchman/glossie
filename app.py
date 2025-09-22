@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, g
 from passlib.hash import sha256_crypt
 from sqlmodel import Field, SQLModel, create_engine, Relationship, Session, select
 from typing import List, Optional
@@ -54,17 +54,20 @@ class Subscriber(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
 
 
+@app.before_request
+def glossary_menu():
+    g.menu = Glossary.glossary_menu()
+
 @app.route('/')
 def glossary_directory():
    glossary_results = Glossary.get_all_terms()
-   menu = Glossary.glossary_menu()
    glossary = [glossary.model_dump() for glossary in glossary_results]
-   return render_template('index.html', glossary_terms=glossary, glossary_menu=menu)
+   return render_template('index.html', glossary_terms=glossary, glossary_menu=g.menu)
 
 @app.route('/<letter>')
 def glossary_search(letter):
     terms = Glossary.search_by_letter(letter.upper())
-    return render_template('tautogram.html', glossary_terms=terms)
+    return render_template('tautogram.html', glossary_terms=terms,  glossary_menu=g.menu)
 
 @app.route('/about')
 def about():

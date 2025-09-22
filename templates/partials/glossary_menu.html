@@ -1,0 +1,11 @@
+
+    <div class="index">
+        <menu>
+            {% for glossary_item in glossary_menu %}
+            {% if glossary_item['initial'] is not none %}
+            <li>
+                <a href="/{{ glossary_item['initial']|lower }}">{{ glossary_item['initial'] }}</a>
+            </li>
+            {% endif %} {% endfor %}
+        </menu>
+    </div>

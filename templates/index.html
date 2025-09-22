@@ -1,27 +1,22 @@
 {% extends 'base.html' %} {% block content %}
-<div id="container">
-    <menu>
-        {% for glossary_item in glossary_menu %} {% if glossary_item['initial']
-        is not none %}
-        <li>
-            <a href="/{{ glossary_item['initial']|lower }}"
-                >{{ glossary_item['initial'] }}</a
-            >
-        </li>
-        {% endif %} {% endfor %}
-    </menu>
+<div class="container" id="glossary-container">
+    {% include 'partials/glossary_menu.html' %}
     <main>
-        <h1>Glossie</h1>
-        <div id="glossary-content-flex">
-            <div id="letter">
-                <h1>A</h1>
+           <div id="glossary-content-flex">
+              <div id="left-column">
+                  <div id="letter">
+                      <h1>A</h1>
+                  </div>
+              </div>
+            <div id="right-column">
+            {% for glossary in glossary_terms|sort(attribute='term') %}
+                <div class="glossary-terms">
+                    <p class="letters" data-initial="{{ glossary['initial'] }}"></p>
+                    <p>{{ glossary['term'] }}</p>
+                    <p>{{ glossary['definition'] }}</p>
+                </div>
+                {% endfor %}
             </div>
-            {% for glossary in glossary_terms %}
-            <div class="glossary-terms">
-                <p>{{ glossary['term'] }}</p>
-                <p>{{ glossary['definition'] }}</p>
-            </div>
-            {% endfor %}
         </div>
     </main>
 </div>

@@ -1,5 +1,7 @@
-{% extends 'base.html' %} {% block content %} {% for glossary_term in
-glossary_terms %}
+{% extends 'base.html' %}
+{% block content %}
+{% include 'partials/glossary_menu.html' %}
+{% for glossary_term in glossary_terms %}
 <h2>{{ glossary_term['initial'] }}</h2>
 <p>{{ glossary_term['term'] }}</p>
 <p>{{ glossary_term['definition'] }}</p>
