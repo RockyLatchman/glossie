@@ -25,8 +25,8 @@ class Glossary(SQLModel, table=True):
     term: str = Field()
     definition: str  = Field()
     initial: str = Field(index=True)
-    date_added: datetime = Field(default_factory=datetime.now(timezone.utc))
-    admin_id: Optional[int] = Field(default=None, foreign_key='admin.admin_id')
+    date_added: datetime = Field(default_factory=datetime.now(timezone.utc), exclude=True)
+    admin_id: Optional[int] = Field(default=None, foreign_key='admin.admin_id', exclude=True)
     admin: Optional[Admin] = Relationship(back_populates="glossary_terms")
 
     def get_all_terms():
@@ -96,7 +96,9 @@ def documentation():
 
 @app.route('/api/list/all')
 def glossary_terms():
-    pass
+    glossary_terms = Glossary.get_all_terms()
+    glossary = [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_terms]
+    return jsonify({'glossary' : glossary, 'status' : 200})
 
 @app.route('/api/random-term')
 def random_term():

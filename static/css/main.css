@@ -160,6 +160,11 @@ footer input:hover {
   background: rgba(244, 244, 244, 0.1);
 }
 
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+    background: transparent;
+}
 
 /* Directory  **************************/
 
