@@ -81,10 +81,19 @@ class Glossary(SQLModel, table=True):
 
 
 class Subscriber(SQLModel, table=True):
+    __tablename__ = 'subscribers'
     subscriber_id: int = Field(default=None, primary_key=True)
     email: str = Field()
     status: str = Field(default='active')
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    def save(subscriber):
+        with Session(db) as session:
+           session.add(subscriber)
+           session.commit()
+           session.close()
+
+
 
 
 @app.before_request
@@ -119,9 +128,17 @@ def about():
 def contact():
     pass
 
-@app.route('/subscribe')
+@app.route('/subscribe', methods=['GET', 'POST'])
 def email_subscription():
+    if request.method == 'POST':
+        form_email = request.form.get('subscriber', 'Invalid e-mail')
+        if form_email is not 'Invalid e-mail':
+            subscriber = Subscriber(email=form_email)
+            Subscriber.save(subscriber)
     return render_template('subscribe.html')
+
+
+
 
 @app.route('/documentation')
 def documentation():
