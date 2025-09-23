@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, g
 from passlib.hash import sha256_crypt
 from sqlmodel import Field, SQLModel, create_engine, Relationship, Session, select
+from sqlalchemy import func
 from typing import List, Optional
 from dotenv import load_dotenv
 from datetime import datetime, timezone
@@ -35,17 +36,20 @@ class Glossary(SQLModel, table=True):
          with Session(db) as session:
              return session.exec(select(Glossary)).all()
 
-    def search_by_letter(letter):
-        with Session(db) as session:
-            statement = select(Glossary).where(Glossary.initial == letter)
-            return session.exec(statement).all()
-
     def random_entry():
         glossary = Glossary.get_all_terms()
         return random.choice([
             glossary_item.model_dump() for glossary_item in glossary
         ])
 
+    def search(column, term):
+        with Session(db) as session:
+            statement = ''
+            if column == 'term':
+               statement = select(Glossary).where(func.upper(Glossary.term) == term)
+            elif column == 'initial':
+               statement = select(Glossary).where(Glossary.initial == term)
+            return session.exec(statement).all()
 
     def glossary_menu():
         with Session(db) as session:
@@ -79,7 +83,7 @@ def glossary_directory():
 
 @app.route('/<letter>')
 def glossary_search(letter):
-    terms = Glossary.search_by_letter(letter.upper())
+    terms = Glossary.search('initial', letter.upper())
     return render_template(
         'tautogram.html',
         glossary_terms=terms,
@@ -106,17 +110,23 @@ def documentation():
 @app.route('/api/list/all')
 def glossary_terms():
     glossary_terms = Glossary.get_all_terms()
-    glossary = [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_terms]
-    return jsonify({'message' : glossary, 'status' : 200})
+    return jsonify({
+        'message' : [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_terms],
+        'status' : 200
+    })
 
 @app.route('/api/random-term')
 def random_term():
     random_entry = Glossary.random_entry()
     return jsonify({'message' : random_entry, 'status' : 200})
 
-@app.route('/api/search/term/<id>')
-def search_term():
-    pass
+@app.route('/api/search/<term>')
+def search_term(term):
+    search_result = Glossary.search('term', term.upper())
+    return jsonify({
+        'message' :  [search.model_dump(exclude='glossary_id') for search in search_result],
+        'status' : 200
+    })
 
 @app.route('/dashboard/sign-in')
 def signin():
