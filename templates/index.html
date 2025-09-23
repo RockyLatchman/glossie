@@ -13,7 +13,7 @@
                 {% for glossary in glossary_terms|sort(attribute='term') %}
                     <div class="glossary-terms">
                         <p class="letters" data-initial="{{ glossary['initial'] }}"></p>
-                        <p>{{ glossary['term'] }}</p>
+                        <p class="term">{{ glossary['term'] }}</p>
                         <p>{{ glossary['definition'] }}</p>
                     </div>
                     {% endfor %}

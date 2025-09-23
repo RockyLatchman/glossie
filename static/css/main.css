@@ -1,6 +1,15 @@
 
 /* Global  ****************************/
 
+
+
+.heebo-font {
+  font-family: "Heebo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -15,21 +24,21 @@ body {
 }
 
 header {
-  width: 95%;
+  width: 100%;
   height: 35px;
   background: #030303;
-  padding: 20px 0;
+  padding: 30px 0;
   z-index: 9999 !important;
-  margin-left: 75px;
   position: fixed;
   top: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(212,212,212,0.1);
 }
 
  header h3 {
-  margin-left: 75px;
+  margin-left: 150px;
 }
 
 header h3 a {
@@ -48,7 +57,7 @@ nav {
 
 nav ul {
   display: block;
-  margin: 2px 0 0 10px;
+  margin: 6px 0 0 10px;
 }
 
 nav ul li {
@@ -129,9 +138,14 @@ main #right-column {
 }
 
 p {
-  font: normal 300 1em "novel-sans-greek", sans-serif;
+  font: normal 200 0.9em "Heebo", sans-serif;
+  letter-spacing: 1px;
   color: #fafafa;
   margin-top: 10px;
+}
+
+ .term {
+  font: normal 900 0.9em "Heebo", sans-serif;
 }
 
 footer {
@@ -181,6 +195,32 @@ footer input:hover {
 /* About  ******************************/
 
 
+#about {
+  margin: 175px auto 0 auto;
+  width: 60%;
+  border: 1px solid rgba(212,212,212,0.1);
+  border-radius: 20px;
+  padding: 45px;
+}
+
+#about h3 {
+  font: normal 700 1.6em "americane",sans-serif;
+  color: #ededed;
+  text-decoration: none;
+}
+
+
+#about p {
+  font: normal 200 0.9em "Heebo", sans-serif;
+  color: #fafafa;
+  margin-top: 10px;
+  line-height: 2.5em;
+}
+
+span {
+  color:#FDE49E;
+}
+
 /* Contact  ****************************/
 
 
@@ -198,7 +238,7 @@ footer input:hover {
 }
 
 #documentation p {
-  font: normal 300 0.9em "novel-sans-greek", sans-serif;
+  font: normal 200 0.9em "Heebo", sans-serif;
   color: #fafafa;
   margin-top: 10px;
 }
@@ -208,7 +248,8 @@ footer input:hover {
 }
 
 .entries h4 {
-  font: normal 300 1em "novel-sans-greek", sans-serif;
+  font: normal 500 0.9em "americane",sans-serif;
+  letter-spacing: 1px;
   color:#FDE49E;
 }
 

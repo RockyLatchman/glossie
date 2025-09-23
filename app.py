@@ -98,7 +98,7 @@ def glossary_search(letter):
 
 @app.route('/about')
 def about():
-    pass
+    return render_template('about.html')
 
 @app.route('/contact')
 def contact():
