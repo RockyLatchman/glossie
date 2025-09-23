@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <div id="subscribe">
+      <h3>Subscribe for what?</h3>
+      <p>
+        If you are learning to code you can subscribe to receive e-mails with
+        daily tech terminology. In the future (perhaps by the time you read this),
+        I will be adding diagrams and short videos to demo various concepts related
+        to the terms you search. Hopefully this little contribution can assist in
+        your studies of Computer Science.
+      </p>
+      <form method="POST">
+          <input type="email" name="subscriber" placeholder="E-mail address" required>
+          <input type="submit" value="Send">
+      </form>
+  </div>
+</main>
+{% endblock %}

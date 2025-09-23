@@ -121,7 +121,7 @@ def contact():
 
 @app.route('/subscribe')
 def email_subscription():
-    pass
+    return render_template('subscribe.html')
 
 @app.route('/documentation')
 def documentation():

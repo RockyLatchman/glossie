@@ -55,7 +55,7 @@ function loadMenu() {
        <menu>
          <li><a href="/about">About</a></li>
          <li><a href="/documentation">Documentation</a></li>
-         <li><a href="/newsletter">Newsletter</a></li>
+         <li><a href="/subscribe">Subscribe</a></li>
        </menu>
      </div>
   `;
