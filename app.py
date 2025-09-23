@@ -5,6 +5,8 @@ from typing import List, Optional
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 import os
+import json
+import random
 
 load_dotenv('.env')
 app = Flask(__name__)
@@ -37,6 +39,13 @@ class Glossary(SQLModel, table=True):
         with Session(db) as session:
             statement = select(Glossary).where(Glossary.initial == letter)
             return session.exec(statement).all()
+
+    def random_entry():
+        glossary = Glossary.get_all_terms()
+        return random.choice([
+            glossary_item.model_dump() for glossary_item in glossary
+        ])
+
 
     def glossary_menu():
         with Session(db) as session:
@@ -98,11 +107,12 @@ def documentation():
 def glossary_terms():
     glossary_terms = Glossary.get_all_terms()
     glossary = [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_terms]
-    return jsonify({'glossary' : glossary, 'status' : 200})
+    return jsonify({'message' : glossary, 'status' : 200})
 
 @app.route('/api/random-term')
 def random_term():
-    pass
+    random_entry = Glossary.random_entry()
+    return jsonify({'message' : random_entry, 'status' : 200})
 
 @app.route('/api/search/term/<id>')
 def search_term():
