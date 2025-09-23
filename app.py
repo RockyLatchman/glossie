@@ -15,6 +15,21 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
 db = create_engine(os.environ.get('SQLALCHEMY_DATABASE_URI'))
 
+quote_machine = [
+    {
+      'quote' : 'Fear is ugly because it makes you irrational. Fear makes you jump to conclusions. Fear makes you reactionary.',
+      'author' : 'DHH'
+    },
+    {
+      'quote' : 'SPAM SPAM..such a great song',
+      'author' : 'Guido Van Rossum'
+    },
+    {
+      'quote' : 'When you don’t create things, you become defined by your tastes rather than ability. Your tastes only narrow and exclude people. so create',
+      'author' : '_why'
+    }
+]
+
 class Admin(SQLModel, table=True):
     admin_id: int = Field(default=None, primary_key=True)
     username: str = Field()
@@ -98,7 +113,7 @@ def glossary_search(letter):
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', random_quote=random.choice(quote_machine))
 
 @app.route('/contact')
 def contact():

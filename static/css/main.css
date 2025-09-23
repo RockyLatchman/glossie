@@ -138,7 +138,7 @@ main #right-column {
 }
 
 p {
-  font: normal 200 0.9em "Heebo", sans-serif;
+  font: normal 300 0.9em "Heebo", sans-serif;
   letter-spacing: 1px;
   color: #fafafa;
   margin-top: 10px;
@@ -211,10 +211,17 @@ footer input:hover {
 
 
 #about p {
-  font: normal 200 0.9em "Heebo", sans-serif;
+  font: normal 300 0.9em "Heebo", sans-serif;
   color: #fafafa;
   margin-top: 10px;
   line-height: 2.5em;
+}
+
+blockquote {
+  font: normal 500 0.8em "Heebo", sans-serif;
+  color: #fafafa;
+  margin-top: 10px;
+  width: 100%;
 }
 
 span {
@@ -238,7 +245,7 @@ span {
 }
 
 #documentation p {
-  font: normal 200 0.9em "Heebo", sans-serif;
+  font: normal 300 0.9em "Heebo", sans-serif;
   color: #fafafa;
   margin-top: 10px;
 }
@@ -264,6 +271,12 @@ span {
 
 .entries pre {
   color: #fafafa;
+}
+
+.url span {
+  color: #fafafa;
+  background:#1E1E1E;
+  font-weight: 500;
 }
 
 /* Newsletter  **************************/
