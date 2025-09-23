@@ -186,6 +186,44 @@ footer input:hover {
 
 /* Documentation  **********************/
 
+#documentation {
+  margin: 150px auto 0 auto;
+  width: 75%;
+}
+
+#documentation h3 {
+  font: normal 700 1.6em "americane",sans-serif;
+  color: #ededed;
+  text-decoration: none;
+}
+
+#documentation p {
+  font: normal 300 0.9em "novel-sans-greek", sans-serif;
+  color: #fafafa;
+  margin-top: 10px;
+}
+
+.entries {
+  margin: 35px 0;
+}
+
+.entries h4 {
+  font: normal 300 1em "novel-sans-greek", sans-serif;
+  color:#FDE49E;
+}
+
+.entry-content {
+  background: #1E1E1E;
+  padding: 25px;
+  border-radius: 15px;
+  margin: 15px 0 50px 0;
+  height: 140px;
+  overflow-y: scroll;
+}
+
+.entries pre {
+  color: #fafafa;
+}
 
 /* Newsletter  **************************/
 

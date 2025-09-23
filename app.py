@@ -36,10 +36,15 @@ class Glossary(SQLModel, table=True):
          with Session(db) as session:
              return session.exec(select(Glossary)).all()
 
+    def glossary_limit(glossary_count):
+        with Session(db) as session:
+           return session.exec(select(Glossary).limit(glossary_count)).all()
+
+
     def random_entry():
         glossary = Glossary.get_all_terms()
         return random.choice([
-            glossary_item.model_dump() for glossary_item in glossary
+            glossary_item.model_dump(exclude={'glossary_id'}) for glossary_item in glossary
         ])
 
     def search(column, term):
@@ -105,7 +110,7 @@ def email_subscription():
 
 @app.route('/documentation')
 def documentation():
-    pass
+    return render_template('documentation.html')
 
 @app.route('/api/list/all')
 def glossary_terms():
@@ -114,6 +119,12 @@ def glossary_terms():
         'message' : [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_terms],
         'status' : 200
     })
+
+@app.route('/api/list/limit/<count>')
+def glossary_entry_count(count):
+    glossary_limit = Glossary.glossary_limit(count)
+    return [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_limit]
+
 
 @app.route('/api/random-term')
 def random_term():
@@ -124,7 +135,7 @@ def random_term():
 def search_term(term):
     search_result = Glossary.search('term', term.upper())
     return jsonify({
-        'message' :  [search.model_dump(exclude='glossary_id') for search in search_result],
+        'message' :  [search.model_dump(exclude={'glossary_id'}) for search in search_result],
         'status' : 200
     })
 
