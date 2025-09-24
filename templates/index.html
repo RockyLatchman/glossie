@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
    {% block content %}
-    <div class="container" id="glossary-container">
+    <div class="container">
         {% include 'partials/glossary_menu.html' %}
         <main>
             <div id="glossary-content-flex">
@@ -20,5 +20,6 @@
                 </div>
             </div>
         </main>
+        {% include 'partials/footer.html' %}
     </div>
 {% endblock %}

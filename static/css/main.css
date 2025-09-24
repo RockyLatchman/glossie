@@ -21,6 +21,7 @@ html {
 
 body {
   background: #030303;
+  overflow-y: hidden;
 }
 
 header {
@@ -96,27 +97,28 @@ nav ul li {
 }
 
 .container {
-  width: 95%;
-  height: auto;
-  padding: 2%;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll !important;
 }
 
 main {
-  width: 85%;
+  width: 100%;
+  height: auto;
   margin: 5% auto 0 auto;
-  padding-bottom: 8%;
 }
 
 #glossary-content-flex {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding-top: 35px;
-  width: 100%;
+  padding: 35px 0 100px 0;
+  width: 70%;
+  margin: 0 auto;
 }
 
 main #left-column{
-   width: 15%;
+  width: 15%;
 }
 
 main #right-column {
@@ -151,9 +153,11 @@ p {
 footer {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   height: 75px;
   background: #101010;
+  overflow-y: hidden;
 }
 
 footer input {
@@ -162,7 +166,7 @@ footer input {
   border: none;
   display: block;
   margin: 20px auto 0 auto;
-  width: 45%;
+  width: 500px;
   height: 40px;
   outline: transparent;
   font: normal 200 1em "americane", sans-serif !important;
@@ -175,9 +179,9 @@ footer input:hover {
 }
 
 ::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
-    background: transparent;
+  height: 12px;
+  width: 12px;
+  background: transparent;
 }
 
 /* Directory  **************************/
@@ -196,8 +200,8 @@ footer input:hover {
 
 
 #about {
-  margin: 175px auto 0 auto;
-  width: 60%;
+  margin: 12.5% auto 0 auto;
+  width: 45%;
   border: 1px solid rgba(212,212,212,0.1);
   border-radius: 20px;
   padding: 45px;
@@ -234,8 +238,9 @@ span {
 /* Documentation  **********************/
 
 #documentation {
-  margin: 150px auto 0 auto;
-  width: 75%;
+  margin: 10% auto 0 auto;
+  padding-bottom: 95px;
+  width: 57%;
 }
 
 #documentation h3 {
@@ -281,59 +286,78 @@ span {
 
 /* Subscribe  **************************/
 
-#subscribe {
-  margin: 175px auto 0 auto;
-  width: 55%;
-  border: 1px solid rgba(212,212,212,0.1);
-  border-radius: 20px;
+#subscription {
+  position: fixed;
+  top: 150px;
+  left: 25%;
   padding: 45px;
+  width: 50%;
+  height: 220px;
+  border-radius: 20px;
+  background: #fafafa;
 }
 
-#subscribe h3 {
+#subscription h3 {
   font: normal 700 1.6em "americane",sans-serif;
-  color: #ededed;
+  color: #1e1e1e;
   text-decoration: none;
 }
 
-
-#subscribe p {
+#subscription  p {
   font: normal 300 0.8em "Heebo", sans-serif;
-  color: #fafafa;
+  color:#030303;
   margin-top: 10px;
   line-height: 2.5em;
 }
 
-#subscribe form {
+#subscription form {
   width: 100%;
   margin: 25px auto 0 auto;
 }
 
-#subscribe form input[type='email']{
+#subscription form input[type='email']{
   width: 70%;
   height: 45px;
   border: none;
   border-radius: 5px;
   outline: transparent;
-  background:#1E1E1E;
+  background:#030303;
   padding-left: 10px;
   color: #fafafa;
 }
 
-#subscribe form input[type='submit'] {
-  border: 1px solid #fafafa;
+#subscription form input[type='submit'] {
+  border: 2px solid #030303;
   border-radius: 5px;
   background: transparent;
-  color: #fafafa;
-  font: normal 300 0.9em "Heebo", sans-serif;
+  color: #030303;
+  font: normal 700 0.9em "Heebo", sans-serif;
+  text-transform: uppercase;
   width: 140px;
-  height: 43px;
+  height: 40px;
   cursor: pointer;
   margin-left: 15px;
 }
 
-
+#subscription .close {
+ float: right;
+ margin: -25px -20px 0 0;
+ font: normal 500 1.4em "americane", sans-serif !important;
+ color: #030303;
+ text-decoration: none;
+}
 
 /* Styles for menus etc. (JavaScript) */
+
+#overlay {
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999 !important;
+}
 
 .menu-window {
   width: 100%;
@@ -350,9 +374,12 @@ span {
   animation: menuSlideOut 1s ease-out .3s backwards;
 }
 
-#close {
+ .menu-window .close {
   float: right;
   margin: 20px 35px 0 0;
+  font: normal 200 1em "americane", sans-serif !important;
+  color: #030303;
+  text-decoration: none;
 }
 
 .menu-window menu {
@@ -366,7 +393,7 @@ span {
   padding-right: 25px;
 }
 
-.menu-window a {
+.menu-window li a {
   font: normal 200 1em "americane", sans-serif !important;
   color: #030303;
   text-decoration: none;

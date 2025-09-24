@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div> class="container" id="glossary-container">
+<main>
+  <div id="signin">
+      <h3>Sign in</h3>
+      <form method="POST" action="/subscribe">
+          <input type="text" name="username" placeholder="Username" required>
+          <input type="password" name="password" placeholder="Password" required>
+          <input type="submit" value="Send">
+      </form>
+  </div>
+  </main>
+</div>
+{% endblock %}

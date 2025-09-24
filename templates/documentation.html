@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'partials/glossary_menu.html' %}
+<div class="container">
 <main>
   <div id="documentation">
     <h3>Documentation</h3>
@@ -25,5 +27,7 @@
        <div class="entry-content"><pre></pre></div>
     </div>
   </div>
-</main>
+ </main>
+  {% include 'partials/footer.html' %}
+</div>
 {% endblock %}

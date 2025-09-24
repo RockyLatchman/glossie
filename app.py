@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, g
+from flask import Flask, request, jsonify, render_template, g, url_for, redirect
 from passlib.hash import sha256_crypt
 from sqlmodel import Field, SQLModel, create_engine, Relationship, Session, select
 from sqlalchemy import func
@@ -94,8 +94,6 @@ class Subscriber(SQLModel, table=True):
            session.close()
 
 
-
-
 @app.before_request
 def glossary_menu():
     g.menu = Glossary.glossary_menu()
@@ -122,27 +120,30 @@ def glossary_search(letter):
 
 @app.route('/about')
 def about():
-    return render_template('about.html', random_quote=random.choice(quote_machine))
+    return render_template(
+        'about.html',
+        random_quote=random.choice(quote_machine),
+        glossary_menu=g.menu
+    )
 
 @app.route('/contact')
 def contact():
     pass
 
-@app.route('/subscribe', methods=['GET', 'POST'])
+@app.route('/subscribe', methods=['POST'])
 def email_subscription():
+    referrer_url = request.referrer
     if request.method == 'POST':
         form_email = request.form.get('subscriber', 'Invalid e-mail')
         if form_email is not 'Invalid e-mail':
             subscriber = Subscriber(email=form_email)
             Subscriber.save(subscriber)
-    return render_template('subscribe.html')
-
-
-
+        if referrer_url:
+            return redirect(referrer_url)
 
 @app.route('/documentation')
 def documentation():
-    return render_template('documentation.html')
+    return render_template('documentation.html',glossary_menu=g.menu)
 
 @app.route('/api/list/all')
 def glossary_terms():
@@ -173,7 +174,7 @@ def search_term(term):
 
 @app.route('/dashboard/sign-in')
 def signin():
-    pass
+    return render_template('signin.html')
 
 @app.route('/dashboard/sign-out')
 def signout():

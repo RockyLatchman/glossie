@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'partials/glossary_menu.html' %}
+<div class="container">
 <main>
   <div id="about">
      <h3>About</h3>
@@ -12,4 +14,6 @@
      <blockquote>&quot;{{ random_quote['quote']}}&quot;&nbsp;&nbsp;&nbsp;&mdash;{{ random_quote['author'] }}</blockquote>
   </div>
 </main>
+{% include 'partials/footer.html' %}
+</div>
 {% endblock %}

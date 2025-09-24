@@ -1,22 +1,31 @@
 {% extends 'base.html' %}
   {% block content %}
-  <div class="container" id="glossary-container">
   {% include 'partials/glossary_menu.html' %}
+  <div class="container">
     <main>
         <div id="glossary-content-flex">
         <div id="left-column">
+
             <div id="letter">
                 <h1>{{ letter }}</h1>
             </div>
+
         </div>
+
         <div id="right-column">
         {% for glossary_term in glossary_terms %}
+
         <div class="glossary-terms">
             <h2>{{ glossary_term['initial'] }}</h2>
             <p class="term">{{ glossary_term['term'] }}</p>
             <p>{{ glossary_term['definition'] }}</p>
         </div>
+
         {% endfor %}
-       </div>
-    </main>
- {% endblock %}
+        </div>
+
+    </div>
+  </main>
+  {% include 'partials/footer.html' %}
+ </div>
+{% endblock %}
