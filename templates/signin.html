@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<div> class="container" id="glossary-container">
+{% if request.endpoint == 'signin' %}
+   {% include 'partials/dashboard_menu.html' %}
+{% endif %}
+<div class="container">
 <main>
   <div id="signin">
       <h3>Sign in</h3>
