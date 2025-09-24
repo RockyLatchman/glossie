@@ -1,7 +1,6 @@
 const letters = document.querySelectorAll('[data-initial]');
 const letter = document.querySelector('#letter h1');
 const glossaryIndex = document.querySelectorAll('.index menu li a');
-const hamburgerMenu = document.querySelector('nav ul li');
 const allEntries = document.querySelector('#all div pre');
 const randomEntry = document.querySelector('#random div pre');
 const searchTerm = document.querySelector('#search-term div pre');
@@ -109,11 +108,19 @@ function characterIdentifier(){
   }
 }
 
-hamburgerMenu.addEventListener('click', (e) => {
-   loadMenu();
-})
+function siteMenu(){
+  const hamburgerMenu = document.querySelector('nav ul li');
+  if (hamburgerMenu){
+    hamburgerMenu.addEventListener('click', (e) => {
+       loadMenu();
+    })
+  }
+}
+
+
 
 document.addEventListener('DOMContentLoaded', (e) => {
    characterIdentifier();
    if (location.pathname == '/documentation') glossaryDemo();
+   if (location.pathname != '/dashboard/signin') siteMenu();
 });
