@@ -2,7 +2,6 @@
 /* Global  ****************************/
 
 
-
 .heebo-font {
   font-family: "Heebo", sans-serif;
   font-optical-sizing: auto;
@@ -38,7 +37,7 @@ header {
   border-bottom: 1px solid rgba(212,212,212,0.1);
 }
 
- header h3 {
+header h3 {
   margin-left: 150px;
 }
 
@@ -346,6 +345,63 @@ span {
  color: #030303;
  text-decoration: none;
 }
+
+/* Dashboard  **************************/
+
+#signin {
+  width: 30%;
+  height: 230px;
+  margin: 12% auto 0 auto;
+  padding: 50px;
+  border: 1px solid  rgba(244, 244, 244, 0.1);
+  border-radius: 25px;
+}
+
+#signin h3 {
+  font: normal 700 1.6em "americane",sans-serif;
+  color: #fafafa;
+  text-decoration: none;
+  margin: 0 0 25px 0;
+}
+
+#signin form input[type='text']{
+  width: 100%;
+  height: 45px;
+  border: none;
+  border-radius: 5px;
+  outline: transparent;
+  background:#101010;
+  margin-bottom: 25px;
+  padding-left: 10px;
+  color: #fafafa;
+}
+
+#signin form input[type='password']{
+  width: 100%;
+  height: 45px;
+  border: none;
+  border-radius: 5px;
+  outline: transparent;
+  background:#101010;
+  margin-bottom: 35px;
+  padding-left: 10px;
+  color: #fafafa;
+}
+
+#signin form input[type='submit']{
+  border: 2px solid rgba(212,212,212,0.1);
+  border-radius: 5px;
+  background: transparent;
+  color: #fafafa;
+  font: normal 700 0.9em "Heebo", sans-serif;
+  width: 140px;
+  height: 40px;
+  float: right;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+
 
 /* Styles for menus etc. (JavaScript) */
 
