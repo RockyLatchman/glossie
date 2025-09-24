@@ -135,7 +135,7 @@ def email_subscription():
     referrer_url = request.referrer
     if request.method == 'POST':
         form_email = request.form.get('subscriber', 'Invalid e-mail')
-        if form_email is not 'Invalid e-mail':
+        if form_email != 'Invalid e-mail':
             subscriber = Subscriber(email=form_email)
             Subscriber.save(subscriber)
         if referrer_url:
@@ -157,7 +157,6 @@ def glossary_terms():
 def glossary_entry_count(count):
     glossary_limit = Glossary.glossary_limit(count)
     return [glossary.model_dump(exclude={'glossary_id'}) for glossary in glossary_limit]
-
 
 @app.route('/api/random-term')
 def random_term():
