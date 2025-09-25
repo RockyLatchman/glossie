@@ -43,6 +43,7 @@ class Admin(SQLModel, table=True):
     last_active: datetime = Field(default=datetime.now(timezone.utc))
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     glossary_terms: List['Glossary'] = Relationship(back_populates="admin")
+    quotes: List['Quote'] = Relationship(back_populates="admin")
 
 class Glossary(SQLModel, table=True):
     glossary_id: int = Field(default=None, primary_key=True)
@@ -95,7 +96,7 @@ class Subscriber(SQLModel, table=True):
     subscriber_id: int = Field(default=None, primary_key=True)
     email: str = Field()
     status: str = Field(default='active')
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     def save(subscriber):
         with Session(db) as session:
@@ -119,6 +120,22 @@ class Subscriber(SQLModel, table=True):
     def subscriber_count(cls):
         with Session(db) as session:
             return session.exec(select(func.count()).select_from(Subscriber)).one()
+
+class Quote(SQLModel, table=True):
+    __tablename__ = 'quotes'
+    quote_id: int = Field(default=None, primary_key=True)
+    author: str = Field()
+    quote: str = Field()
+    date_added: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    admin_id: Optional[int] = Field(default=1, foreign_key='admin.admin_id', exclude=True)
+    admin: Optional[Admin] = Relationship(back_populates="quotes")
+
+    @classmethod
+    def add(cls, quotes):
+        with Session(db) as session:
+            session.add(quotes)
+            session.commit()
+
 
 @app.before_request
 def glossary_menu():
@@ -229,7 +246,6 @@ def add_entry():
         return redirect(url_for('dashboard'))
     return render_template('dashboard.html')
 
-
 @app.route('/dashboard/edit/entry/<entry_id>')
 def edit_entry():
     pass
@@ -253,6 +269,17 @@ def subscriber(subscriber_id):
        subscribed = Subscriber.retrieve_subscribers()
        subscribers = [subscriber.model_dump() for subscriber in subscribed]
        return subscribers
+
+@app.route('/dashboard/add-quote', methods=['POST'])
+def add_quotes():
+    if request.method == 'POST':
+        quote = Quote(
+            author = request.form.get('author'),
+            quote = request.form.get('quote')
+        )
+        Quote.add(quote)
+        return redirect(url_for('dashboard'))
+    return render_template('dashboard.html')
 
 
 if __name__ == '__main__':
