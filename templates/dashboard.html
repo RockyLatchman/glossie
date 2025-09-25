@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if request.endpoint == 'dashboard' %}
+   {% include 'partials/dashboard_menu.html' %}
+{% endif %}
+<div class="container">
+<main>
+  <div id="dashboard">
+      <div id="dashboard-content-flex">
+      <div id="left-column">
+          <div id="letter">
+              <h1>{{ letter }}</h1>
+          </div>
+      </div>
+      <div id="right-column">
+         <h3>Glossary</h3>
+      {% for glossary_term in glossary_terms %}
+      <div class="glossary-terms">
+          <p class="term">{{ glossary_term['term'] }}</p>
+          <p>{{ glossary_term['definition'] }}</p>
+          <ul>
+            <li><a href="{{ url_for('edit_entry', entry_id=glossary_term['glossary_id']) }}">Edit</a></li>
+            <li>|</li>
+            <li><a href="{{ url_for('delete_entry', entry_id=glossary_term['glossary_id']) }}">Delete</a></li>
+          </ul>
+      </div>
+      {% endfor %}
+      </div>
+      <div id="subscription-container">
+          <h3>{{ subscriber_count }} Subscribers</h3>
+          {% for subscriber in subscribers %}
+            <ul>
+              <li>Date of subscription: &nbsp;&nbsp;{{ subscriber['created_at']| format_date('%b, %d %Y') }}</li>
+              <li>{{ subscriber['email'] }}</li>
+              <li><a href="{{ url_for('delete_entry', entry_id=subscriber['subscriber_id']) }}">Delete</a></li>
+            </ul>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div id="footer-tab-container">
+    <div class="footer-menu">&vellip;</div>
+    <div id="footer-content">
+      <a href="" id="footer-menu">[x]</a>
+     <section>
+      <div id="footer-tab-header">
+        <h3>Add term</h3>
+        <div id="footer-tab-menu">
+            <ul>
+              <li><a href="#" class="tab">Terms</a></li>
+             <li><a href="#" class="tab">Quotes</a></li>
+            </ul>
+        </div>
+      </div>
+       <div id="footer-tab-body">
+         <form method="POST" action="" id="entry-form">
+             <input type="text" name="term" placeholder="Term" required>
+             <textarea name="definition" placeholder="Definition"></textarea>
+             <input type="submit" value="Save entry">
+         </form>
+         <form method="POST" action="" id="quote-form">
+             <input type="text" name="author" placeholder="Author" required>
+             <textarea name="quote" placeholder="Quote"></textarea>
+             <input type="submit" value="Save quote">
+         </form>
+       </div>
+     </section>
+    <div>
+</div>
+{% endblock %}

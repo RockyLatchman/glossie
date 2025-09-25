@@ -5,6 +5,9 @@ const allEntries = document.querySelector('#all div pre');
 const randomEntry = document.querySelector('#random div pre');
 const searchTerm = document.querySelector('#search-term div pre');
 const searchLimit = document.querySelector('#limited-search div pre');
+const footerMenuButton = document.querySelector('.footer-menu');
+const tabs = document.querySelectorAll('.tab');
+const closeFooterButton = document.querySelector('#footer-menu');
 
 const navMenu = `
    <div class="menu-window">
@@ -117,10 +120,47 @@ function siteMenu(){
   }
 }
 
-
-
 document.addEventListener('DOMContentLoaded', (e) => {
    characterIdentifier();
    if (location.pathname == '/documentation') glossaryDemo();
-   if (location.pathname != '/dashboard/signin') siteMenu();
+   siteMenu()
 });
+/*
+function createTemplate(templateHTML){
+  const template = document.createElement('template');
+  template.innerHTML = templateHTML;
+  document.body.appendChild(template.content);
+}
+
+function openFooterMenu(){
+  createTemplate(footerHTML);
+}
+
+footerMenuButton.addEventListener('click', (e) => {
+   openFooterMenu();
+});
+*/
+
+
+
+function switchTab(currentTab) {
+  if(currentTab.target.textContent == 'Terms'){
+     document.querySelector('#footer-tab-header h3').innerHTML = 'Add term';
+     document.querySelector('#entry-form').style.display = 'block';
+     document.querySelector('#quote-form').style.display = 'none';
+  } else {
+     document.querySelector('#footer-tab-header h3').innerHTML = 'Add quote';
+     document.querySelector('#quote-form').style.display = 'block';
+     document.querySelector('#entry-form').style.display = 'none';
+  }
+}
+
+tabs.forEach((tab) => {
+  tab.addEventListener('click', (e) => {
+    switchTab(e);
+  })
+});
+
+footerMenuButton.addEventListener('click', (e) => {
+  const footerContent = document.querySelector('#footer-content').style.display = 'block';
+})

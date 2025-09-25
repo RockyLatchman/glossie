@@ -30,6 +30,12 @@ quote_machine = [
     }
 ]
 
+class Utilities:
+    def date_filter(value, format='%b, %d %Y'):
+        if isinstance(value, datetime):
+            return value.strftime(format)
+        return value
+
 class Admin(SQLModel, table=True):
     admin_id: int = Field(default=None, primary_key=True)
     username: str = Field()
@@ -93,6 +99,14 @@ class Subscriber(SQLModel, table=True):
            session.commit()
            session.close()
 
+    def retrieve_subscribers():
+        with Session(db) as session:
+            return session.exec(select(Subscriber)).all()
+
+    @classmethod
+    def subscriber_count(cls):
+        with Session(db) as session:
+            return session.exec(select(func.count()).select_from(Subscriber)).one()
 
 @app.before_request
 def glossary_menu():
@@ -181,7 +195,15 @@ def signout():
 
 @app.route('/dashboard')
 def dashboard():
-    pass
+    glossary_results = Glossary.get_all_terms()
+    subscribed = Subscriber.retrieve_subscribers()
+    app.jinja_env.filters['format_date'] = Utilities.date_filter
+    return render_template(
+        'dashboard.html',
+        glossary_terms=[glossary.model_dump() for glossary in glossary_results],
+        subscribers = [subscriber.model_dump() for subscriber in subscribed],
+        subscriber_count = Subscriber.subscriber_count()
+    )
 
 @app.route('/dashboard/add-entry')
 def add_entry():
