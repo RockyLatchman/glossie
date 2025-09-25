@@ -32,7 +32,12 @@
             <ul>
               <li>Date of subscription: &nbsp;&nbsp;{{ subscriber['created_at']| format_date('%b, %d %Y') }}</li>
               <li>{{ subscriber['email'] }}</li>
-              <li><a href="{{ url_for('delete_entry', entry_id=subscriber['subscriber_id']) }}">Delete</a></li>
+              <li>
+                  <button
+                   hx-post="{{ url_for('subscriber', subscriber_id=subscriber['subscriber_id']) }}"
+                   hx-target="#subscription-container"
+                >Delete</button>
+              </li>
             </ul>
           {% endfor %}
       </div>
@@ -55,12 +60,12 @@
         </div>
       </div>
        <div id="footer-tab-body">
-         <form method="POST" action="" id="entry-form">
+         <form method="POST" action="/dashboard/add-entry" id="entry-form">
              <input type="text" name="term" placeholder="Term" required>
              <textarea name="definition" placeholder="Definition"></textarea>
              <input type="submit" value="Save entry">
          </form>
-         <form method="POST" action="" id="quote-form">
+         <form method="POST" action="/dashboard/add-quote" id="quote-form">
              <input type="text" name="author" placeholder="Author" required>
              <textarea name="quote" placeholder="Quote"></textarea>
              <input type="submit" value="Save quote">

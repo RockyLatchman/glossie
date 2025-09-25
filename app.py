@@ -41,7 +41,7 @@ class Admin(SQLModel, table=True):
     username: str = Field()
     password: str = Field(max_length=150)
     last_active: datetime = Field(default=datetime.now(timezone.utc))
-    created_at: datetime = Field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     glossary_terms: List['Glossary'] = Relationship(back_populates="admin")
 
 class Glossary(SQLModel, table=True):
@@ -49,9 +49,14 @@ class Glossary(SQLModel, table=True):
     term: str = Field()
     definition: str  = Field()
     initial: str = Field(index=True)
-    date_added: datetime = Field(default_factory=datetime.now(timezone.utc), exclude=True)
-    admin_id: Optional[int] = Field(default=None, foreign_key='admin.admin_id', exclude=True)
+    date_added: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), exclude=True)
+    admin_id: Optional[int] = Field(default=1, foreign_key='admin.admin_id', exclude=True)
     admin: Optional[Admin] = Relationship(back_populates="glossary_terms")
+
+    def add_entry(entry):
+        with Session(db) as session:
+            session.add(entry)
+            session.commit()
 
     def get_all_terms():
          with Session(db) as session:
@@ -60,7 +65,6 @@ class Glossary(SQLModel, table=True):
     def glossary_limit(glossary_count):
         with Session(db) as session:
            return session.exec(select(Glossary).limit(glossary_count)).all()
-
 
     def random_entry():
         glossary = Glossary.get_all_terms()
@@ -91,7 +95,7 @@ class Subscriber(SQLModel, table=True):
     subscriber_id: int = Field(default=None, primary_key=True)
     email: str = Field()
     status: str = Field(default='active')
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)
 
     def save(subscriber):
         with Session(db) as session:
@@ -102,6 +106,14 @@ class Subscriber(SQLModel, table=True):
     def retrieve_subscribers():
         with Session(db) as session:
             return session.exec(select(Subscriber)).all()
+
+    @classmethod
+    def remove_subscriber(cls, subscriber_id):
+        with Session(db) as session:
+            statement = select(Subscriber).where(Subscriber.subscriber_id == subscriber_id)
+            subscriber = session.exec(statement).first()
+            session.delete(subscriber)
+            session.commit()
 
     @classmethod
     def subscriber_count(cls):
@@ -205,9 +217,18 @@ def dashboard():
         subscriber_count = Subscriber.subscriber_count()
     )
 
-@app.route('/dashboard/add-entry')
+@app.route('/dashboard/add-entry', methods=['POST'])
 def add_entry():
-    pass
+    if request.method == 'POST':
+        glossary_entry = Glossary(
+            term=request.form.get('term'),
+            definition=request.form.get('definition'),
+            initial=request.form.get('term')[0].upper()
+        )
+        glossary_item = Glossary.add_entry(glossary_entry)
+        return redirect(url_for('dashboard'))
+    return render_template('dashboard.html')
+
 
 @app.route('/dashboard/edit/entry/<entry_id>')
 def edit_entry():
@@ -225,10 +246,13 @@ def view_entry():
 def view_subscribers():
     pass
 
-@app.route('/dashboard/subscriber/')
-def subscriber():
-    #delete or view subscriber
-    pass
+@app.route('/dashboard/subscriber/<subscriber_id>', methods=['POST'])
+def subscriber(subscriber_id):
+    if request.method == 'POST':
+       Subscriber.remove_subscriber(subscriber_id)
+       subscribed = Subscriber.retrieve_subscribers()
+       subscribers = [subscriber.model_dump() for subscriber in subscribed]
+       return subscribers
 
 
 if __name__ == '__main__':

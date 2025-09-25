@@ -141,8 +141,6 @@ footerMenuButton.addEventListener('click', (e) => {
 });
 */
 
-
-
 function switchTab(currentTab) {
   if(currentTab.target.textContent == 'Terms'){
      document.querySelector('#footer-tab-header h3').innerHTML = 'Add term';
